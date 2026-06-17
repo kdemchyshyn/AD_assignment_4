@@ -1,0 +1,56 @@
+# Task 1
+SET product:1:name "The Witcher 3"
+SET product:1:price "50"
+SET product:1:category "videogames"
+MGET product:1:name product:1:price product:1:category
+
+# Task 2
+HSET product:2 name "7 Wonders" price "20" category "board games" stock "150"
+HGETALL product:2
+
+# Task 3
+HSET order:1001 product_id "product:1" quantity 1 total_price 40 date "2026-06-17"
+HSET order:1002 product_id "product:2" quantity 2 total_price 100 date "2026-06-16"
+HSET order:1003 product_id "product:6" quantity 1 total_price 45 date "2026-06-17"
+HSET order:1004 product_id "product:3" quantity 1 total_price 60 date "2026-06-15"
+HSET order:1005 product_id "product:8" quantity 1 total_price 48 date "2026-06-14"
+HSET order:1006 product_id "product:4" quantity 2 total_price 50 date "2026-06-13"
+HSET order:1007 product_id "product:1" quantity 1 total_price 40 date "2026-06-13"
+HSET order:1008 product_id "product:10" quantity 1 total_price 40 date "2026-06-12"
+HSET order:1009 product_id "product:7" quantity 3 total_price 105 date "2026-06-09"
+HSET order:1010 product_id "product:9" quantity 1 total_price 140 date "2026-06-01"
+
+LPUSH recent_orders order:1010 order:1009 order:1008 order:1007 order:1006 order:1005 order:1004 order:1003 order:1002 order:1001
+
+LRANGE recent_orders 0 -1
+LRANGE recent_orders 0 2
+
+# Task 4
+SADD product_tags "RPG" "multi_player" "open_world" "story_rich" "action" "single_player" "4_people" "7_people"
+
+SADD product_tags "RPG"
+SISMEMBER product_tags "single_player"
+SISMEMBER product_tags "puzzle"
+
+
+# Task 5
+SET featured_product "The Witcher 3: Wild Hunt"
+EXPIRE featured_product 60
+TTL featured_product
+
+GET featured_product
+TTL featured_product
+
+
+# Task 6
+SETEX cache:product:2 120 "{ 'name': '7 Wonders', 'stock': '150', 'price': '20' }"
+GET cache:product:2
+
+TTL cache:product:2
+GET cache:product:2
+
+
+# Bonus
+ZADD sales_leaderboard 1250 "The Witcher 3" 890 "7 Wonders" 3000 "Gwent" 450 "Portal 2" 210 "Keep the Heroes Out!"
+ZREVRANGE sales_leaderboard 0 -1 WITHSCORES
+ZREVRANGE sales_leaderboard 0 0 WITHSCORES
